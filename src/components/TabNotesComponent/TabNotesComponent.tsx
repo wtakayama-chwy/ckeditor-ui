@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Tab, Tabs } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import TabPanel from '../TabPanel/TabPanel'
-import CustomCKEditor from '../ckeditor/CustomCKEditor'
+import { Api } from '../../services/api'
+
+// Be sure to work on first render
+const CustomCKEditor = React.lazy(() => import('../ckeditor/CustomCKEditor'))
 
 function a11yProps(index: number) {
   return {
@@ -10,61 +14,63 @@ function a11yProps(index: number) {
   }
 }
 
+type NoteApiResponse = {
+  notesData: {
+    id: string
+    note: {
+      notes01: string
+      notes02: string
+    }
+  }
+}
+
 const TabNotesComponent = () => {
+  const { t } = useTranslation(['Common'])
+
   const [value, setValue] = useState(0)
-  const [medicalHistory, setMedicalHistory] = useState(null)
-  const [dischargeHistory, setDischargeHistory] = useState(null)
+  const [notes, setNotes] = useState<string[] | null>(null)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
 
   useEffect(() => {
-    const fakeFeatchNotes1 = new Promise(resolve => {
-      setTimeout(() => {
-        resolve({
-          template: '<p>Medical Notes!</p>',
-        })
-      }, 2500)
-    })
+    async function getNotes() {
+      try {
+        const response = await Api.get<NoteApiResponse>('notes')
 
-    fakeFeatchNotes1.then((res: any) => {
-      // eslint-disable-next-line no-console
-      console.log(res)
-      setMedicalHistory(res.template)
-    })
-  }, [])
+        if (!(response.status === 200)) {
+          const message = `An error has ocurred: ${response.status}`
+          throw new Error(message)
+        }
 
-  useEffect(() => {
-    const fakeFeatchNotes2 = new Promise(resolve => {
-      setTimeout(() => {
-        resolve({
-          template: '<p>Discharge Notes!</p>',
-        })
-      }, 2500)
-    })
-
-    fakeFeatchNotes2.then((res: any) => {
-      // eslint-disable-next-line no-console
-      console.log(res)
-      setDischargeHistory(res.template)
-    })
+        const { note } = await response.data.notesData
+        setNotes([
+          note.notes01,
+          note.notes02,
+        ].filter(Boolean))
+      } catch (error: any) {
+        // eslint-disable-next-line no-console
+        console.error(`[CATCH] - ${error.message}`)
+      }
+    }
+    getNotes()
   }, [])
 
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs aria-label="basic tabs example" value={value} onChange={handleChange}>
-          <Tab label="Editor One" {...a11yProps(0)} />
-          <Tab label="Editor Two" {...a11yProps(1)} />
+          <Tab label={t('Common:NOTES_01')} {...a11yProps(0)} />
+          <Tab label={t('Common:NOTES_02')} {...a11yProps(1)} />
         </Tabs>
       </Box>
-      <TabPanel index={0} value={value}>
-        <CustomCKEditor id="editor-01" initialData={medicalHistory} />
-      </TabPanel>
-      <TabPanel index={1} value={value}>
-        <CustomCKEditor id="editor-02" initialData={dischargeHistory} />
-      </TabPanel>
+      {notes?.map((note, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <TabPanel index={index} key={index} value={value}>
+          <CustomCKEditor id={`editor-0${index}`} initialData={note} />
+        </TabPanel>
+      ))}
     </Box>
 
   )

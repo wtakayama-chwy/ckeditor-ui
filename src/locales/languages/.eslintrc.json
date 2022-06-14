@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "jsonc/key-spacing": ["error", { "beforeColon" : true }],
+    "max-len": "off",
+    "max-lines": "off"
+  },
+  "ignorePatterns": [".eslintrc.json"]
+}
