@@ -19,14 +19,12 @@ import Link from '@ckeditor/ckeditor5-link/src/link'
 import List from '@ckeditor/ckeditor5-list/src/list'
 import Table from '@ckeditor/ckeditor5-table/src/table'
 import GeneralHtmlSupport from '@ckeditor/ckeditor5-html-support/src/generalhtmlsupport'
-// import ReactDOM from 'react-dom'
+
+// Custom Plugins
 import CustomSignature from './plugins/converters/signature'
 
-// CKEditor plugin implementing a product widget to be used in the editor content.
-// import ProductPreviewEditing from './plugins/productPreview/productpreviewediting'
-// import ProductPreview from './plugins/productPreview/ProductPreview'
-
 import i18n, { LanguageCode } from '../../locales/i18n'
+import ImportNotesTemplate from './plugins/import-notes-template/importNotesTemplate'
 
 const CKEditorLanguagesMap = {
   [LanguageCode['en-US']]: 'en', // it comes by default in English
@@ -51,16 +49,20 @@ CustomClassicEditor.builtinPlugins = [
   Table,
   TodoList,
   GeneralHtmlSupport,
+  // Custom plugins
   CustomSignature,
-  // ProductPreviewEditing,
+  ImportNotesTemplate,
 ]
 
 // CustomClassicEditor configuration.
 CustomClassicEditor.defaultConfig = {
+  table: {
+    customClass: ['SIGNATURE'],
+  },
   toolbar: {
     items: [
       'heading',
-      'code', // this will be custom plugin
+      'importNotesTemplate', // this will be custom plugin
       '|',
       'bold',
       'italic',
@@ -78,6 +80,7 @@ CustomClassicEditor.defaultConfig = {
   },
   language: CKEditorLanguagesMap[i18n.language],
   // This is important to avoid CKEditor removing/replacing some tags and styles
+  // as they work with MVC pattern and have their own models
   htmlSupport: {
     allow: [
       {
@@ -88,44 +91,6 @@ CustomClassicEditor.defaultConfig = {
       },
     ],
   },
-  // The configuration of the Products plugin. It specifies a function that will allow
-  // the editor to render a React <ProductPreview> component inside a product widget.
-  // products: {
-  //   productRenderer: (id: string, domElement: any) => {
-  //     const product = [
-  //       {
-  //         id: 1,
-  //         name: 'Colors of summer in Poland',
-  //         price: '$1500',
-  //         image: 'product1.jpg',
-  //       },
-  //       {
-  //         id: 2,
-  //         name: 'Mediterranean sun on Malta',
-  //         price: '$1899',
-  //         image: 'product2.jpg',
-  //       },
-  //       {
-  //         id: 3,
-  //         name: 'Tastes of Asia',
-  //         price: '$2599',
-  //         image: 'product3.jpg',
-  //       },
-  //       {
-  //         id: 4,
-  //         name: 'Exotic India',
-  //         price: '$2200',
-  //         image: 'product4.jpg',
-  //       },
-  //     ].find((prod: any) => prod.id === id)
-
-  //     ReactDOM.render(
-  //       <ProductPreview id={id} {...product} />,
-  //       domElement,
-  //     )
-  //   },
-  // },
 }
 
 export default CustomClassicEditor
-

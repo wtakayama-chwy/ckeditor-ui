@@ -7,50 +7,30 @@ import CKEditorInspector from '@ckeditor/ckeditor5-inspector'
 
 import CustomClassicEditor from './CustomClassicEditor'
 import CustomCKEditorSkeleton from './CustomCKEditorSkeleton'
-// import ProductList from './plugins/productPreview/ProductList'
-
-type EditorToolbarNames =
-  'heading' |
-  'fontfamily' |
-  'fontsize' |
-  'alignment' |
-  'fontColor' |
-  'fontBackgroundColor' |
-  'strikethrough' |
-  'underline' |
-  'subscript' |
-  'superscript' |
-  'link' |
-  'outdent' |
-  'indent' |
-  'bulletedList' |
-  'numberedList' |
-  'todoList' |
-  'code' |
-  'codeBlock' |
-  'insertTable' |
-  'uploadImage' |
-  'blockQuote' |
-  'undo' |
-  'redo' |
-  'bold' |
-  'italic' |
-  'revisionHistory' |
-  '|'
-
-type EditorConfig = {
-  // When passing plugins we must use a personal build
-  plugins?: any[]
-  toolbar: EditorToolbarNames[] | {
-    items: EditorToolbarNames[]
-    shouldNotGroupWhenFull: boolean
-  }
-}
 
 export interface CustomCKEditorProps {
   id: string
-  initialData: string | null
+  initialData: string | undefined
 }
+
+// function getConvertedData(editor: any) {
+//   const initialData = editor.getData()
+
+//   editor.conversion.for('upcast').elementToElement({
+//     view: {
+//       name: 'td',
+//       classes: 'SIGNATURE_label',
+//     },
+//     model: (viewElement: any, { writer }: any) => {
+//       // eslint-disable-next-line no-debugger
+//       debugger
+//       const a = ''
+//       return writer.createElement('heading', { level: viewElement.getAttribute('data-level') })
+//     },
+//   })
+
+//   return initialData
+// }
 
 const CustomCKEditor = ({
   id,
@@ -65,12 +45,17 @@ const CustomCKEditor = ({
 
   const handleEditorReady = (editor: any) => {
     setCustomEditor(editor)
+
     setEditorData(editor.getData())
-    CKEditorInspector.attach(editor)
+    // setEditorData(getConvertedData(editor))
+
+    if (process.env.NODE_ENV === 'development') {
+      CKEditorInspector.attach(editor)
+    }
   }
 
   // Do not render the <CKEditor /> component before the layout is ready.
-  if (!editorData) {
+  if (!editorData && initialDataProp) {
     return (
       <CustomCKEditorSkeleton />
     )
@@ -82,49 +67,15 @@ const CustomCKEditor = ({
         data={editorData}
         editor={CustomClassicEditor}
         id={id}
-        onBlur={(event: any, editor: any) => {
+        onBlur={(event, editor) => {
           console.log('[BLUR]', event, editor)
         }}
         onChange={handleEditorDataChange}
-        onFocus={(event: any, editor: any) => {
+        onFocus={(event, editor) => {
           console.log('[FOCUS]', event, editor)
         }}
         onReady={handleEditorReady}
       />
-      {/* <ProductList
-        key="product-list"
-        products={[
-          {
-            id: 1,
-            name: 'Colors of summer in Poland',
-            price: '$1500',
-            image: 'product1.jpg',
-          },
-          {
-            id: 2,
-            name: 'Mediterranean sun on Malta',
-            price: '$1899',
-            image: 'product2.jpg',
-          },
-          {
-            id: 3,
-            name: 'Tastes of Asia',
-            price: '$2599',
-            image: 'product3.jpg',
-          },
-          {
-            id: 4,
-            name: 'Exotic India',
-            price: '$2200',
-            image: 'product4.jpg',
-          },
-        ]}
-        onClick={(tid: any) => {
-          customEditor.execute('insertProduct', tid)
-          customEditor.editing.view.focus()
-        }}
-      /> */}
-
     </>
   )
 }

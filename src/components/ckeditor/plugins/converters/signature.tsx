@@ -1,13 +1,16 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
-// import React from 'react'
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin'
-// @ts-ignore
 import Widget from '@ckeditor/ckeditor5-widget/src/widget'
 
-// There're 2 types of conversion, upcast and downcast. Upcast is when you're loading data to your editor
-// and downcast is when you're making changes the editor.
+// There're basically 2 types of conversion, upcast and downcast.
+// 1. Upcast is when you're loading data to your editor
+// 2. Downcast is when you're making changes the editor.
 // https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/conversion/intro.html
+
+// https://github.com/ckeditor/ckeditor5/issues/11704 - Typescript status
+
+// type GenericItems = '$root' | '$container' | '$block' | '$blockObject' | '$inlineObject' | '$text'
 
 export default class CustomSignature extends Plugin {
   static get requires() {
@@ -22,43 +25,170 @@ export default class CustomSignature extends Plugin {
   _defineSchema() {
     const { schema } = this.editor.model
 
-    schema.register('signatureView', {
-      // Behaves like a self-contained object (e.g. an image).
+    // table
+    schema.register('signature', {
+      // Whether an item is "self-contained" and should be treated as a whole. By default it sets isLimit true
+      // which means that the element cannot be split by Enter
       isObject: true,
-
-      // Allow in places where other blocks are allowed (e.g. directly in the root).
+      // Inherits "allowed in" from other items, in this case $block
       allowWhere: '$block',
+      allowAttributes: ['style'],
+    })
 
-      // Each product preview has an ID. A unique ID tells the application which
-      // product it represents and makes it possible to render it inside a widget.
-      // allowAttributes: ['id'],
+    // table row
+    schema.register('signatureRow', {
+      // Whether the element can be split by Enter. So, actions that happen inside this element are limited to its content.
+      isLimit: true,
+      allowIn: 'signature',
+      // Inherits "allowed children" from other items, in this case $block
+      allowContentOf: '$block',
+    })
+
+    // table cell label
+    schema.register('signatureLabel', {
+      isLimit: true,
+      allowIn: 'signatureRow',
+      allowContentOf: '$block',
+      allowAttributes: ['style'],
+    })
+
+    // table cell signature
+    schema.register('signatureSignature', {
+      isLimit: true,
+      allowIn: 'signatureRow',
+      allowContentOf: '$block',
+      allowAttributes: ['style'],
     })
   }
 
   _defineConverters() {
-    const { editor } = this
-    // const renderSignatureView = editor.config.get('signature').signatureRenderer
+    const { conversion } = this.editor
+    // const renderSignature = config.get('signature').signatureRender
 
-    editor.conversion.for('upcast').elementToElement({
+    // UPCAST
+    conversion.for('upcast').elementToElement({
+      model: (viewElement: any, { writer: modelWriter }: any) => {
+        const signatureModel = modelWriter.createElement('signature', {
+          style: viewElement.getAttribute('style'),
+        })
+        return signatureModel
+      },
       view: {
         name: 'table',
         classes: 'SIGNATURE',
       },
-      model: (viewElement: any, { writer: modelWriter }: any) =>
-        modelWriter.createElement('signatureView'),
+      converterPriority: 'high',
     })
 
-    editor.conversion.for('dataDowncast').elementToElement({
-      model: 'signatureView',
-      view: (modelElement: any, { writer: viewWriter }: any) =>
-        viewWriter.createEmptyElement('table', {
+    conversion.for('upcast').elementToElement({
+      model: 'signatureRow',
+      view: {
+        name: 'tr',
+      },
+      converterPriority: 'high',
+    })
+
+    conversion.for('upcast').elementToElement({
+      model: (viewElement: any, { writer: modelWriter }: any) => {
+        const signatureLabelModel = modelWriter.createElement('signatureLabel', {
+          style: viewElement.getAttribute('style'),
+        })
+        return signatureLabelModel
+      },
+      view: {
+        name: 'td',
+        classes: 'SIGNATURE_label',
+      },
+      converterPriority: 'high',
+    })
+
+    conversion.for('upcast').elementToElement({
+      model: (viewElement: any, { writer: modelWriter }: any) => {
+        const signatureLabelModel = modelWriter.createElement('signatureSignature', {
+          style: viewElement.getAttribute('style'),
+        })
+        return signatureLabelModel
+      },
+      view: {
+        name: 'td',
+        classes: 'SIGNATURE_signature',
+      },
+      converterPriority: 'high',
+    })
+
+    // DATA DOWNCAST
+    conversion.for('downcast').elementToElement({
+      model: 'signature',
+      view: (modelElement: any, { writer: viewWriter }: any) => {
+        const tableElement = viewWriter.createContainerElement('table', {
           class: 'SIGNATURE',
-        }),
+          style: modelElement.getAttribute('style'),
+        })
+        return tableElement
+      },
+      converterPriority: 'high',
     })
 
-    // editor.conversion.for('editingDowncast').elementToElement({
-    //   model: 'signatureView',
-    //   view: ()
-    // })
+    conversion.for('downcast').elementToElement({
+      model: 'signatureRow',
+      view: {
+        name: 'tr',
+      },
+      converterPriority: 'high',
+    })
+
+    conversion.for('downcast').elementToElement({
+      model: 'signatureLabel',
+      view: (modelElement: any, { writer: viewWriter }: any) => {
+        const tableElement = viewWriter.createContainerElement('td', {
+          class: 'SIGNATURE_label',
+          style: modelElement.getAttribute('style'),
+        })
+        return tableElement
+      },
+      converterPriority: 'high',
+    })
+
+    conversion.for('downcast').elementToElement({
+      model: 'signatureSignature',
+      view: (modelElement: any, { writer: viewWriter }: any) => {
+        const tableElement = viewWriter.createContainerElement('td', {
+          class: 'SIGNATURE_signature',
+          style: modelElement.getAttribute('style'),
+        })
+        return tableElement
+      },
+      converterPriority: 'high',
+    })
   }
 }
+
+// type View = string | {
+//   classes?: string | string[]
+//   converterPriority?: 'high' | 'highest'
+//   name: string
+// }
+
+// type Model = string
+
+// function convertData({
+//   conversion,
+//   type,
+//   model,
+//   view,
+//   override = true,
+// }: {
+//   conversion: any
+//   model: Model
+//   override: boolean
+//   type: 'editingDowncast' | 'upcast' | 'dataDowncast' | 'downcast'
+//   view: View
+// }) {
+//   conversion.for(type).elementToElement({
+//     model,
+//     view,
+//     ...(override ? { converterPriority: 'high' } : {}),
+//   })
+
+// convertData()
+

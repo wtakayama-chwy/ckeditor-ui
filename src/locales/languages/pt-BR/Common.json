@@ -1,7 +1,14 @@
 {
   "ENGLISH" : "Inglês",
+  "LICENSE" : "",
   "NOTES_01" : "Notas 01",
   "NOTES_02" : "Notas 02",
+  "NOTES_TEMPLATE" : "Modelo de Notas",
   "PORTUGUESE" : "Português",
+  "SIGNATURE_VIEW" : {
+    "BY_SIGNER_NAME" : "",
+    "LABEL" : "",
+    "SIGNED" : ""
+  },
   "SPANISH" : "Espanhol"
 }
