@@ -6,9 +6,9 @@
   "NOTES_TEMPLATE" : "Plantilla de Notas",
   "PORTUGUESE" : "Portugués",
   "SIGNATURE_VIEW" : {
-    "BY_SIGNER_NAME" : "",
-    "LABEL" : "",
-    "SIGNED" : ""
+    "BY_SIGNER_NAME" : "por {signerName}",
+    "LABEL" : "Firma",
+    "SIGNED" : "Firmado"
   },
   "SPANISH" : "Español"
 }

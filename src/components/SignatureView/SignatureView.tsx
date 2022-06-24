@@ -42,14 +42,14 @@ const styles: Record<string, CSSProperties> = {
 export interface SignatureViewProps {
   signatureDate?: string
   signatureString?: string
-  signerLicence?: string
+  signerLicense?: string
   signerName?: string
 }
 
 const SignatureView = ({
   signatureDate = '',
   signatureString,
-  signerLicence,
+  signerLicense,
   signerName,
 }: SignatureViewProps) => {
   const { t } = useTranslation('Common')
@@ -82,7 +82,7 @@ const SignatureView = ({
               ? ` ${signatureDate} ${t('Common:SIGNATURE_VIEW.BY_SIGNER_NAME', { signerName })}`
               : ` ${t('Common:SIGNATURE_VIEW.BY_SIGNER_NAME', { signerName })}`
             }
-            {signerLicence ? ` | ${t('Common:LICENSE').toLowerCase()}: ${signerLicence}` : ''}
+            {signerLicense ? ` | ${t('Common:LICENSE').toLowerCase()}: ${signerLicense}` : ''}
           </p>
         </div>
       )}

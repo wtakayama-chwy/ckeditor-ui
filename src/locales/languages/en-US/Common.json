@@ -6,9 +6,9 @@
   "NOTES_TEMPLATE" : "Notes Template",
   "PORTUGUESE" : "Portuguese",
   "SIGNATURE_VIEW" : {
-    "BY_SIGNER_NAME" : "",
-    "LABEL" : "",
-    "SIGNED" : ""
+    "BY_SIGNER_NAME" : "by {signerName}",
+    "LABEL" : "Signature",
+    "SIGNED" : "Signed"
   },
   "SPANISH" : "Spanish"
 }

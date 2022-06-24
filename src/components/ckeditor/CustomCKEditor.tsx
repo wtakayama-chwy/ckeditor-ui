@@ -13,41 +13,33 @@ export interface CustomCKEditorProps {
   initialData: string | undefined
 }
 
-// function getConvertedData(editor: any) {
-//   const initialData = editor.getData()
-
-//   editor.conversion.for('upcast').elementToElement({
-//     view: {
-//       name: 'td',
-//       classes: 'SIGNATURE_label',
-//     },
-//     model: (viewElement: any, { writer }: any) => {
-//       // eslint-disable-next-line no-debugger
-//       debugger
-//       const a = ''
-//       return writer.createElement('heading', { level: viewElement.getAttribute('data-level') })
-//     },
-//   })
-
-//   return initialData
-// }
-
 const CustomCKEditor = ({
   id,
   initialData: initialDataProp,
 }: CustomCKEditorProps) => {
+  const [isLoading, setIsLoading] = useState(true)
   const [customEditor, setCustomEditor] = useState<any>()
   const [editorData, setEditorData] = useState(initialDataProp)
 
+  console.log({
+    customEditor,
+    dataUi: customEditor?.ui?.editor?.getData(),
+  })
+
   const handleEditorDataChange = (event: any, editor: any) => {
-    setEditorData(editor.getData())
+    const newData = editor.getData()
+    setEditorData(newData)
   }
 
   const handleEditorReady = (editor: any) => {
     setCustomEditor(editor)
 
+    setIsLoading(false)
+    // console.log({
+    //   get: editor.data.get(),
+    //   getData: editor.getData(),
+    // })
     setEditorData(editor.getData())
-    // setEditorData(getConvertedData(editor))
 
     if (process.env.NODE_ENV === 'development') {
       CKEditorInspector.attach(editor)
@@ -55,14 +47,15 @@ const CustomCKEditor = ({
   }
 
   // Do not render the <CKEditor /> component before the layout is ready.
-  if (!editorData && initialDataProp) {
-    return (
-      <CustomCKEditorSkeleton />
-    )
-  }
+  // if (!editorData && initialDataProp) {
+  //   return (
+  //     <CustomCKEditorSkeleton />
+  //   )
+  // }
 
   return (
     <>
+      {isLoading && <CustomCKEditorSkeleton />}
       <CKEditor
         data={editorData}
         editor={CustomClassicEditor}

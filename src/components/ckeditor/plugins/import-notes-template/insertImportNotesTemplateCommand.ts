@@ -24,11 +24,9 @@ export default class InsertImportNotesTemplateCommand extends Command {
   //   this.editor = editor
   // }
 
-  execute(getNotesTemplate?: Function) {
+  execute() {
     // eslint-disable-next-line no-alert
     const htmlNotesTemplate = prompt(i18n.t('Common:NOTES_TEMPLATE'))
-    const htmlNotesTemplate2 = getNotesTemplate?.()
-    debugger
 
     if (htmlNotesTemplate) {
       // Avoid malicious scripts

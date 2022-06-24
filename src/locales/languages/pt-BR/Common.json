@@ -6,9 +6,9 @@
   "NOTES_TEMPLATE" : "Modelo de Notas",
   "PORTUGUESE" : "Português",
   "SIGNATURE_VIEW" : {
-    "BY_SIGNER_NAME" : "",
-    "LABEL" : "",
-    "SIGNED" : ""
+    "BY_SIGNER_NAME" : "por {signerName}",
+    "LABEL" : "Assinatura",
+    "SIGNED" : "Assinado"
   },
   "SPANISH" : "Espanhol"
 }

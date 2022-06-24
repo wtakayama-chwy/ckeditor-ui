@@ -106,7 +106,8 @@
 }
 
 /* Signature incoming HTML styles - inline styles are stripped by the ckeditor5 */
-/* table.SIGNATURE {
+/* 
+table.SIGNATURE {
   background-color: blue;
   border-collapse: collapse;
 }

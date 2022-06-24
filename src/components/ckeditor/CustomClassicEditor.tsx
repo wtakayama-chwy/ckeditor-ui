@@ -1,3 +1,5 @@
+// import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable max-len */
 // Editor
@@ -25,6 +27,7 @@ import CustomSignature from './plugins/converters/signature'
 
 import i18n, { LanguageCode } from '../../locales/i18n'
 import ImportNotesTemplate from './plugins/import-notes-template/importNotesTemplate'
+import SignatureView from '../SignatureView/SignatureView'
 
 const CKEditorLanguagesMap = {
   [LanguageCode['en-US']]: 'en', // it comes by default in English
@@ -90,6 +93,19 @@ CustomClassicEditor.defaultConfig = {
         styles: true,
       },
     ],
+  },
+  signature: {
+    signatureRender: (props: any, domElement: any) => {
+      // @ts-ignore
+      // const { props } = this || {}
+      // const root = createRoot(document.getElementById(props.id) as HTMLElement)
+      const root = createRoot(domElement)
+
+      root.render(
+        <SignatureView {...props} />,
+        // domElement,
+      )
+    },
   },
 }
 
