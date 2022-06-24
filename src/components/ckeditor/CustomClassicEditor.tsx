@@ -1,7 +1,36 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable max-len */
+
 // Editor
-import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
+import ClassicEditorBase from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
+// import EditorWatchdog from '@ckeditor/ckeditor5-watchdog/src/editorwatchdog'
+
+// import CollaborativeEditing
+import RealTimeCollaborativeEditing from '@ckeditor/ckeditor5-real-time-collaboration/src/realtimecollaborativeediting'
+import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices'
+
+/*
+// The following plugins enable real-time collaborative comments.
+// You do not need to import them if you do not want this integration.
+import Comments from '@ckeditor/ckeditor5-comments/src/comments';
+import RealTimeCollaborativeComments from '@ckeditor/ckeditor5-real-time-collaboration/src/realtimecollaborativecomments';
+
+// The following plugins enable real-time collaborative track changes and are optional.
+// They depend on the `Comments` and `RealTimeCollaborativeComments` from above, so make sure to include
+// them in the editor plugins if you want to integrate the real-time collaborative track changes.
+// You do not need to import them if you do not want this integration.
+import TrackChanges from '@ckeditor/ckeditor5-track-changes/src/trackchanges';
+import RealTimeCollaborativeTrackChanges from '@ckeditor/ckeditor5-real-time-collaboration/src/realtimecollaborativetrackchanges';
+
+// The following plugins enable revision history for real-time collaboration.
+// You do not need to import them if you do not want this integration.
+import RevisionHistory from '@ckeditor/ckeditor5-revision-history/src/revisionhistory';
+import RealTimeCollaborativeRevisionHistory from '@ckeditor/ckeditor5-real-time-collaboration/src/realtimecollaborativerevisionhistory';
+
+// The following plugin enables the users presence list and is optional.
+// You do not need to import it if you do not want to integrate the user list.
+import PresenceList from '@ckeditor/ckeditor5-real-time-collaboration/src/presencelist';
+*/
 
 // Languages
 import '@ckeditor/ckeditor5-build-classic/build/translations/pt-br'
@@ -36,7 +65,7 @@ const CKEditorLanguagesMap = {
 
 // In order to add more plugins, including custom ones we need to rebuild the editor. And there's 3 main ways to do that:
 // check more here: https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/frameworks/react.html#customizing-the-builds
-class CustomClassicEditor extends ClassicEditor {}
+class CustomClassicEditor extends ClassicEditorBase {}
 
 // Plugins to include in the build.
 CustomClassicEditor.builtinPlugins = [
@@ -52,6 +81,15 @@ CustomClassicEditor.builtinPlugins = [
   TodoList,
   GeneralHtmlSupport,
   CustomSignature,
+  RealTimeCollaborativeEditing,
+  CloudServices,
+  // Comments,
+  // RealTimeCollaborativeComments,
+  // TrackChanges,
+  // RealTimeCollaborativeTrackChanges,
+  // RevisionHistory,
+  // RealTimeCollaborativeRevisionHistory,
+  // PresenceList
   // ProductPreviewEditing,
 ]
 
@@ -128,4 +166,3 @@ CustomClassicEditor.defaultConfig = {
 }
 
 export default CustomClassicEditor
-

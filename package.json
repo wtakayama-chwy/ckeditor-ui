@@ -86,6 +86,10 @@
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-inspector": "^4.1.0",
+    "@ckeditor/ckeditor5-real-time-collaboration": "^34.1.0",
+    "@ckeditor/ckeditor5-watchdog": "^34.1.0",
+    "@types/ckeditor__ckeditor5-real-time-collaboration": "^32.0.0",
+    "@types/ckeditor__ckeditor5-watchdog": "^29.0.1",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "eslint-config-airbnb": "^19.0.4",

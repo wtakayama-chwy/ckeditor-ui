@@ -4,7 +4,7 @@ import Plugin from '@ckeditor/ckeditor5-core/src/plugin'
 import { toWidget } from '@ckeditor/ckeditor5-widget/src/utils'
 // @ts-ignore
 import Widget from '@ckeditor/ckeditor5-widget/src/widget'
-import InsertProductPreviewCommand from './insertproductpreviewcommand'
+// import InsertProductPreviewCommand from './insertproductpreviewcommand'
 
 export default class ProductPreviewEditing extends Plugin {
   static get requires() {
@@ -16,7 +16,7 @@ export default class ProductPreviewEditing extends Plugin {
     this._defineConverters()
 
     // @ts-ignore
-    this.editor.commands.add('insertProduct', new InsertProductPreviewCommand(this.editor))
+    // this.editor.commands.add('insertProduct', new InsertProductPreviewCommand(this.editor))
   }
 
   _defineSchema() {
