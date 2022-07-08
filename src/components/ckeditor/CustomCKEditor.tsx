@@ -2,12 +2,19 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
+
 // The official CKEditor 5 instance inspector. It helps understand the editor view and model.
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector'
 
-import CustomClassicEditor from './CustomClassicEditor'
+// @ts-ignore
+// Editor - developed from online builder by Tulio
+import CustomClassicEditor from 'ckeditor5-custom-build/build/ckeditor'
+
+// CustomClassicEditor - developed from source by William
+// import CustomClassicEditor from './CustomClassicEditor'
 
 import CustomCKEditorSkeleton from './CustomCKEditorSkeleton'
+import { CKCS_BUNDLE_VERSION, CKCS_TOKEN_URL, CKCS_WSS_URL } from '../../configs'
 
 // import ProductList from './plugins/productPreview/ProductList'
 export type Note = {
@@ -55,6 +62,7 @@ type EditorConfig = {
 }
 
 export interface CustomCKEditorProps {
+  channelId: string | undefined
   id: string
   initialData: Note | null
 }
@@ -62,34 +70,35 @@ export interface CustomCKEditorProps {
 const CustomCKEditor = ({
   id,
   initialData: initialDataProp,
+  channelId,
 }: CustomCKEditorProps) => {
   const [customEditor, setCustomEditor] = useState<any>()
   const [editorData, setEditorData] = useState(initialDataProp)
 
   const handleEditorDataChange = (event: any, editor: any) => {
-    setEditorData(editor.getData())
+    // setEditorData(editor.getData())
     console.log('editorData', editorData)
     console.log({ event, editor })
   }
 
   const handleEditorReady = (editor: any) => {
     setCustomEditor(editor)
-    setEditorData(editor.getData())
+    // setEditorData(editor.getData())
     CKEditorInspector.attach(editor)
     console.log('Editor is ready to use!', editor)
   }
 
   // Do not render the <CKEditor /> component before the layout is ready.
-  if (!editorData) {
+  if (!channelId) {
     console.log('Editor is NOT ready to use!')
+    console.log('channelId:', channelId)
     return (
       <CustomCKEditorSkeleton />
     )
   }
 
-  // const tokenUrl = 'https://89797.cke-cs.com/token/dev/47d7448fad15f7217683546671dc008cc51d8f8ccfba95d70427d30d6348?limit=10'
-  const tokenUrl = 'https://3a79-2804-14c-65a7-8267-d8bd-fde8-1a24-55ed.sa.ngrok.io/ckcs/token'
-  const webSocketUrl = 'wss://89797.cke-cs.com/ws'
+  const tokenUrl = CKCS_TOKEN_URL
+  const webSocketUrl = CKCS_WSS_URL
   const personId = 1
 
   return (
@@ -121,9 +130,10 @@ const CustomCKEditor = ({
               xhr.send()
             }),
             webSocketUrl,
+            bundleVersion: CKCS_BUNDLE_VERSION,
           },
           collaboration: {
-            channelId: editorData.channelId,
+            channelId,
           },
         }}
         editor={CustomClassicEditor}

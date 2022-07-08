@@ -4265,6 +4265,9 @@ ckeditor5-collaboration@^34.1.0:
   dependencies:
     "@ckeditor/ckeditor5-collaboration-core" "^34.1.0"
 
+"ckeditor5-custom-build@file:./ckeditor5js":
+  version "0.0.1"
+
 ckeditor5@34.1.0, ckeditor5@^34.1.0:
   version "34.1.0"
   resolved "https://registry.npmjs.org/ckeditor5/-/ckeditor5-34.1.0.tgz"

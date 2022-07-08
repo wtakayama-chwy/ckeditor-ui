@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { CKCS_URL } from '../configs'
 
 export const AXIOS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -8,7 +9,7 @@ export const AXIOS_HEADERS = {
 }
 
 const ckcsapi = axios.create({
-  baseURL: 'https://3a79-2804-14c-65a7-8267-d8bd-fde8-1a24-55ed.sa.ngrok.io/ckcs/',
+  baseURL: CKCS_URL,
   headers: AXIOS_HEADERS,
 })
 
