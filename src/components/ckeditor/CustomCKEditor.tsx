@@ -19,7 +19,6 @@ import { CKCS_BUNDLE_VERSION, CKCS_TOKEN_URL, CKCS_WSS_URL } from '../../configs
 // import ProductList from './plugins/productPreview/ProductList'
 export type Note = {
   channelId: string
-  content: string
   id: string
 }
 
@@ -63,21 +62,23 @@ type EditorConfig = {
 
 export interface CustomCKEditorProps {
   channelId: string | undefined
-  id: string
-  initialData: Note | null
+  id: string | undefined
+  personId: string | null
+  // initialData: Note | null
 }
 
 const CustomCKEditor = ({
   id,
-  initialData: initialDataProp,
+  // initialData: initialDataProp,
   channelId,
+  personId,
 }: CustomCKEditorProps) => {
   const [customEditor, setCustomEditor] = useState<any>()
-  const [editorData, setEditorData] = useState(initialDataProp)
+  // const [editorData, setEditorData] = useState(initialDataProp)
 
   const handleEditorDataChange = (event: any, editor: any) => {
     // setEditorData(editor.getData())
-    console.log('editorData', editorData)
+    // console.log('editorData', editorData)
     console.log({ event, editor })
   }
 
@@ -99,7 +100,6 @@ const CustomCKEditor = ({
 
   const tokenUrl = CKCS_TOKEN_URL
   const webSocketUrl = CKCS_WSS_URL
-  const personId = 1
 
   return (
     <>
