@@ -135,9 +135,16 @@ const CustomCKEditor = ({
           collaboration: {
             channelId,
           },
+          toolbar: [
+            'heading',
+            '|', 'bold', 'italic', 'link',
+            'bulletedList', 'numberedList',
+            '|', 'insertTable', 'undo', 'redo',
+            'comment', 'trackChanges', '|', 'revisionHistory'],
         }}
         editor={CustomClassicEditor}
         id={id}
+        sidebar={document.querySelector('.sidebar')}
         onBlur={(event: any, editor: any) => {
           console.log('[BLUR]', event, editor)
         }}
