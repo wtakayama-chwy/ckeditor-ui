@@ -1,18 +1,17 @@
 import axios from 'axios'
-import { CKCS_URL } from '../configs'
+import { CKEDITOR_API, APIGW_PRELUDE_AUTH_TOKEN } from '../configs'
 
 export const AXIOS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Authorization',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+  // eslint-disable-next-line quote-props
+  'Authorization': `Bearer ${APIGW_PRELUDE_AUTH_TOKEN}`,
   'Content-Type': 'application/json;charset=UTF-8',
 }
 
 const ckcsapi = axios.create({
-  baseURL: CKCS_URL,
+  baseURL: CKEDITOR_API,
   headers: AXIOS_HEADERS,
 })
-
-ckcsapi.defaults.headers.get['Access-Control-Allow-Origin'] = '*'
 
 export default ckcsapi

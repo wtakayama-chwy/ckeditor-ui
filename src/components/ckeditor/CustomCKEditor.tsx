@@ -14,7 +14,7 @@ import CustomClassicEditor from 'ckeditor5-custom-build/build/ckeditor'
 // import CustomClassicEditor from './CustomClassicEditor'
 
 import CustomCKEditorSkeleton from './CustomCKEditorSkeleton'
-import { CKCS_BUNDLE_VERSION, CKCS_TOKEN_URL, CKCS_WSS_URL } from '../../configs'
+import { APIGW_PRELUDE_AUTH_TOKEN } from '../../configs'
 
 // import ProductList from './plugins/productPreview/ProductList'
 export type Note = {
@@ -61,17 +61,19 @@ type EditorConfig = {
 }
 
 export interface CustomCKEditorProps {
+  bundleVersion: string | undefined
   channelId: string | undefined
   id: string | undefined
-  personId: string | null
-  // initialData: Note | null
+  tokenUrl: string | undefined
+  webSocketUrl: string | undefined
 }
 
 const CustomCKEditor = ({
   id,
-  // initialData: initialDataProp,
   channelId,
-  personId,
+  bundleVersion,
+  tokenUrl,
+  webSocketUrl,
 }: CustomCKEditorProps) => {
   const [customEditor, setCustomEditor] = useState<any>()
   // const [editorData, setEditorData] = useState(initialDataProp)
@@ -98,8 +100,10 @@ const CustomCKEditor = ({
     )
   }
 
-  const tokenUrl = CKCS_TOKEN_URL
-  const webSocketUrl = CKCS_WSS_URL
+  console.log('tokenUrl:', tokenUrl)
+  console.log('webSocketUrl:', webSocketUrl)
+  console.log('channelId:', channelId)
+  console.log('bundleVersion:', bundleVersion)
 
   return (
     <>
@@ -108,12 +112,16 @@ const CustomCKEditor = ({
           cloudServices: {
             tokenUrl: () => new Promise((resolve, reject) => {
               const xhr = new XMLHttpRequest()
+              xhr.withCredentials = true
 
-              xhr.open('GET', `${tokenUrl}?personId=${personId}`)
+              xhr.open('GET', `${tokenUrl}`)
+              xhr.setRequestHeader('Authorization', `Bearer ${APIGW_PRELUDE_AUTH_TOKEN}`)
+              xhr.setRequestHeader('Access-Control-Allow-Origin', '*')
 
               xhr.addEventListener('load', () => {
                 const statusCode = xhr.status
                 const xhrResponse = xhr.response
+                console.log('response:', xhrResponse)
 
                 if (statusCode < 200 || statusCode > 299) {
                   return reject(new Error('Cannot download a new token!'))
@@ -125,12 +133,10 @@ const CustomCKEditor = ({
               xhr.addEventListener('error', () => reject(new Error('Network error')))
               xhr.addEventListener('abort', () => reject(new Error('Abort')))
 
-              xhr.setRequestHeader('Access-Control-Allow-Origin', '*')
-
               xhr.send()
             }),
             webSocketUrl,
-            bundleVersion: CKCS_BUNDLE_VERSION,
+            bundleVersion,
           },
           collaboration: {
             channelId,

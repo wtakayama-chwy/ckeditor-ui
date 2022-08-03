@@ -1,9 +1,4 @@
-const CKCS_API = 'https://7cb7-2804-18-600b-c72f-85bc-d1b6-9d60-89c7.sa.ngrok.io'
-export const CKCS_URL = `${CKCS_API}/ckcs/`
-const CKCS_TOKEN_PATH = 'token'
-
-export const CKCS_ORGANIZATION_ID = '89797'
-export const CKCS_TOKEN_URL = `${CKCS_URL}${CKCS_TOKEN_PATH}`
-export const CKCS_WSS_URL = `wss://${CKCS_ORGANIZATION_ID}.cke-cs.com/ws`
-
-export const CKCS_BUNDLE_VERSION = 'ckeditor-1.0.3'
+export const CKEDITOR_API = 'http://localhost/apigw-prelude/v1/ckeditor'
+export const CKEDITOR_TOKEN_URL = `${CKEDITOR_API}/token`
+// eslint-disable-next-line max-len
+export const APIGW_PRELUDE_AUTH_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlFrSXlNMEkwUmtGRU5VVXlOekF5TXpsRU9VRXlRekpGUkRkQk5EbEdNRFpCUlVZNVF6WTNSZyJ9.eyJodHRwczovL3BldGFieXRlLnZldC9lbWFpbCI6ImZyZWRkaWUubWVyY3VyeUBwZXRhYnl0ZS50ZWNobm9sb2d5IiwiaXNzIjoiaHR0cHM6Ly9wZXRhLWJ5dGUtc3RhZ2UuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVjYWYzN2U5ZTZjOWRiMTEwNDBlZmIyOSIsImF1ZCI6Imh0dHBzOi8vcGV0YWJ5dGUudmV0L2FwaS92MS8iLCJpYXQiOjE2NTk1MzcwMzksImV4cCI6MTY1OTYyMzQzOSwiYXpwIjoiZlkxVnhyNC1jeTI4bUVHb2hWaXJXNWlUa2F2S2gxRm4iLCJzY29wZSI6Im9mZmxpbmVfYWNjZXNzIiwiZ3R5IjoicGFzc3dvcmQifQ.OeGppXAMCjTgnKzcq9ppI40YJEuEdOagC6oqcN7r0txzKXnNdH8ta5ot3uT6quuZGQlr-Xa9vYluDG-QnrMgAu-Dw3n0IHw-GPdvzUsQTlVAmNA9fD8kGBGA66AaA366AXs8tedP_oXR9uPAWxqZr0KjfJTyX9K-sUI4FxwhP82qeabBxqxEeE8BF54AlwjAuzJuK4fdm0xte1Xa3zq2829rdE8-IpDcyNhfdOClavRaUnUOpUvsZ6DCEVCXB208Qg9-Sd_eUOiPHcr5fgTPXUjsWhH_PF5m1D1BVE8ULBC2cAu3oICWSXbMQNxDb_UEbq9M1ujcsthXAEkIc2Rw6A'
